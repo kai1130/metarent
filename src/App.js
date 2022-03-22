@@ -97,7 +97,7 @@ function Loader() {
 }
 
 export default function App() {
-  const [events, setEvents] = useState();
+  const [events] = useState();
   const domContent = useRef();
   const scrollArea = useRef();
   const onScroll = (e) => (state.top.current = e.target.scrollTop);
