@@ -60,7 +60,7 @@ const HTMLContent = ({
   });
   useEffect(() => {
     inView && (document.body.style.background = bgColor);
-  }, [inView]);
+  }, [inView, bgColor]);
   return (
     <Section factor={1.5} offset={1}>
       <group position={[0, position, 0]}>
