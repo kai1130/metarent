@@ -10,7 +10,6 @@
     "@testing-library/user-event": "^7.1.2",
     "drei": "^1.5.3",
     "lerp": "^1.0.3",
-    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-intersection-observer": "^8.28.5",
@@ -39,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.49.9"
   }
 }
