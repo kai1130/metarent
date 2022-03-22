@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header>
       <div className='header-inner'>
-        <div className='logo'>CHAIR.</div>
+        <div className='logo'>TOMI.</div>
         <nav>
           <ul>
             <li>
