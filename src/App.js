@@ -16,7 +16,15 @@ import { a, useTransition } from "@react-spring/web";
 //Intersection Observer
 import { useInView } from "react-intersection-observer";
 import { Button, Link } from "@mui/material";
+import { useMoralis } from "react-moralis";
+import {Moralis} from "moralis-v1";
+// import { ethers } from 'ethers'
 
+import NFTMarketplace_abi from "../src/contractsabi/Marketplace.json";
+import NFT_abi from "../src/contractsabi/NFT.json";
+import CarCert_abi from "../src/contractsabi/CarCertificate.json";
+import Simple_abi from "../src/contractsabi/simple.json";
+require('dotenv').config();
 
 function Model({ url }) {
   const gltf = useGLTFLoader(url, true);
@@ -102,6 +110,20 @@ function Loader() {
   );
 }
 
+
+
+async function bookMe(){
+  const ethers = Moralis.web3Library;
+  const abi = Simple_abi;
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const simpleAddress = process.env.REACT_APP_SIMPLE_ADDRESS;
+  const simpleContract = new ethers.Contract(simpleAddress, abi, provider);
+  const name =  simpleContract.name();
+  console.log(name);
+}
+
+
+
 export default function App() {
 
   const [events] = useState();
@@ -109,6 +131,76 @@ export default function App() {
   const scrollArea = useRef();
   const onScroll = (e) => (state.top.current = e.target.scrollTop);
   useEffect(() => void onScroll({ target: scrollArea.current }), []);
+  const {isAuthenticated, user, isAuthenticating, authenticate, logout, isLoggingOut} = useMoralis()
+
+
+  if (!isAuthenticated) {
+  return (
+    <>
+      <Header />
+      {/* R3F Canvas */}
+      <Canvas
+        concurrent
+        colorManagement
+        camera={{ position: [0, 0, 150], fov: 70 }}
+        >
+        {/* Lights Component */}
+        <Lights />
+        <Suspense fallback={null}>
+          <HTMLContent
+            domContent={domContent}
+            bgColor='#f15946'
+            modelPath='/chevrolet.gltf'
+            positionx={0}
+            positiony={250}
+            positionz={-50}
+            caroffset={200}
+            scale_value={0.3}>
+            <span>Chevrolet</span>
+            <span>Corvette (C7)</span>
+           
+          </HTMLContent>
+          <HTMLContent
+            domContent={domContent}
+            bgColor='#571ec1'
+            modelPath='/nissan.gltf'
+            positionx={0}
+            positiony={0}
+            positionz={-50}
+            caroffset={900}
+            scale_value={0.12}>
+            <span>Nissan</span>
+            <span>Skyline GT-R(C110) Kenmeri</span>
+           
+          </HTMLContent>
+          <HTMLContent
+            domContent={domContent}
+            bgColor='#636567'
+            modelPath='/toyota.gltf'
+            positionx={0}
+            positiony={-250}
+            positionz={-50}
+            caroffset={0}
+            scale_value={0.55}>
+            <span>Toyota</span>
+            <span>AE86 Black Limited Kouki</span>
+           
+          </HTMLContent>
+        </Suspense>
+      </Canvas>
+      <Loader />
+      <div
+        className='scrollArea'
+        ref={scrollArea}
+        onScroll={onScroll}
+        {...events}>
+        <div style={{ position: "sticky", top: 0 }} ref={domContent} />
+        <div style={{ height: `${state.pages * 100 - 10}vh` }} />
+      </div>
+    </>
+  );
+  }
+
 
 
 
@@ -148,7 +240,7 @@ export default function App() {
             scale_value={0.12}>
             <span>Nissan</span>
             <span>Skyline GT-R(C110) Kenmeri</span>
-            <Button variant="contained" >Book Me</Button>
+            <Button variant="contained" onClick={()=>bookMe()} >Book Me</Button>
           </HTMLContent>
           <HTMLContent
             domContent={domContent}
