@@ -2,11 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { MoralisProvider } from "react-moralis";
+require('dotenv').config();
 
 ReactDOM.render(
-  <React.StrictMode>
+
+  <MoralisProvider appId={process.env.REACT_APP_MORALIS_SERVER_APP_ID} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}>
+    
     <App />
-  </React.StrictMode>,
+    </MoralisProvider>,
   document.getElementById("root")
 );
 

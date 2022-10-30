@@ -15,6 +15,8 @@ import { Html, useProgress, useGLTFLoader } from "drei";
 import { a, useTransition } from "@react-spring/web";
 //Intersection Observer
 import { useInView } from "react-intersection-observer";
+import { Button, Link } from "@mui/material";
+
 
 function Model({ url }) {
   const gltf = useGLTFLoader(url, true);
@@ -51,27 +53,31 @@ const HTMLContent = ({
   children,
   bgColor,
   modelPath,
-  position,
+  positionx,
+  positiony,
+  positionz,
+  scale_value,
+  caroffset,
 }) => {
   const ref = useRef();
-  useFrame(() => (ref.current.rotation.y += 0.01));
+  useFrame(() => (ref.current.rotation.y += 0.005));
   const [refItem, inView] = useInView({
-    threshold: 0,
+    threshold: 0.5,
   });
   useEffect(() => {
     inView && (document.body.style.background = bgColor);
   }, [inView, bgColor]);
   return (
-    <Section factor={1.5} offset={1}>
-      <group position={[0, position, 0]}>
-        <mesh ref={ref} position={[0, -35, 0]}>
-          <Model url={modelPath} />
-        </mesh>
+    <Section factor={1.5} offset={0.7}>
+      <group position={[positionx, positiony, positionz]} scale={[scale_value,scale_value,scale_value]}>
         <Html fullscreen portal={domContent}>
           <div ref={refItem} className='container'>
             <h1 className='title'>{children}</h1>
           </div>
         </Html>
+        <mesh ref={ref} position={[0, -250-caroffset, 0]}>
+          <Model url={modelPath} />
+        </mesh>
       </group>
     </Section>
   );
@@ -97,11 +103,14 @@ function Loader() {
 }
 
 export default function App() {
+
   const [events] = useState();
   const domContent = useRef();
   const scrollArea = useRef();
   const onScroll = (e) => (state.top.current = e.target.scrollTop);
   useEffect(() => void onScroll({ target: scrollArea.current }), []);
+
+
 
   return (
     <>
@@ -110,35 +119,49 @@ export default function App() {
       <Canvas
         concurrent
         colorManagement
-        camera={{ position: [0, 0, 120], fov: 70 }}>
+        camera={{ position: [0, 0, 150], fov: 70 }}
+        >
         {/* Lights Component */}
         <Lights />
         <Suspense fallback={null}>
           <HTMLContent
             domContent={domContent}
             bgColor='#f15946'
-            modelPath='/armchairYellow.gltf'
-            position={250}>
-            <span>Meet the new </span>
-            <span>shopping experience </span>
-            <span>for online chairs</span>
+            modelPath='/chevrolet.gltf'
+            positionx={0}
+            positiony={250}
+            positionz={-50}
+            caroffset={200}
+            scale_value={0.3}>
+            <span>Chevrolet</span>
+            <span>Corvette (C7)</span>
+            <Button variant="contained" >Book Me</Button>
           </HTMLContent>
           <HTMLContent
             domContent={domContent}
             bgColor='#571ec1'
-            modelPath='/armchairGreen.gltf'
-            position={0}>
-            <span>Shit... we even</span>
-            <span>got different colors</span>
+            modelPath='/nissan.gltf'
+            positionx={0}
+            positiony={0}
+            positionz={-50}
+            caroffset={900}
+            scale_value={0.12}>
+            <span>Nissan</span>
+            <span>Skyline GT-R(C110) Kenmeri</span>
+            <Button variant="contained" >Book Me</Button>
           </HTMLContent>
           <HTMLContent
             domContent={domContent}
             bgColor='#636567'
-            modelPath='/armchairGray.gltf'
-            position={-250}>
-            <span>And yes</span>
-            <span>we even got</span>
-            <span>monochrome!</span>
+            modelPath='/toyota.gltf'
+            positionx={0}
+            positiony={-250}
+            positionz={-50}
+            caroffset={0}
+            scale_value={0.55}>
+            <span>Toyota</span>
+            <span>AE86 Black Limited Kouki</span>
+            <Button variant="contained" >Book Me</Button>
           </HTMLContent>
         </Suspense>
       </Canvas>
@@ -149,7 +172,7 @@ export default function App() {
         onScroll={onScroll}
         {...events}>
         <div style={{ position: "sticky", top: 0 }} ref={domContent} />
-        <div style={{ height: `${state.pages * 100}vh` }} />
+        <div style={{ height: `${state.pages * 100 - 10}vh` }} />
       </div>
     </>
   );
