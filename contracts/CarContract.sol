@@ -7,13 +7,15 @@ import '@openzeppelin/contracts/access/AccessControl.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-
+import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import 'hardhat/console.sol';
 
 /**
 The abstract of the Smart Contract is to achieve disintermidiation objective. Drivers keep thier deposit in crypto (eth) in the Escrow Smart Contract.
 This project potentially involves multiple entities and authoritises for due-diligent process. Such as KYC.
  */
-contract CarContract is  Ownable, AccessControl, ReentrancyGuard{
+contract CarContract is  Ownable,  ReentrancyGuard, ERC721URIStorage {
 
     /*
     Use the Counter API to generate rental id.
@@ -21,6 +23,11 @@ contract CarContract is  Ownable, AccessControl, ReentrancyGuard{
     using Counters for Counters.Counter;
 
     Counters.Counter private _rentalId;
+
+
+    Counters.Counter private _tokenIds;
+
+
     /*
     Using Safe Math
      */
@@ -31,6 +38,7 @@ contract CarContract is  Ownable, AccessControl, ReentrancyGuard{
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
+    string BaseUri = "https://ipfs.io/ipfs/";
     
   /*
     Enumeration of Rental contract's state to determine the contract status.
@@ -94,6 +102,14 @@ contract CarContract is  Ownable, AccessControl, ReentrancyGuard{
      */
      event LogFallback(address caller, string message);
  
+
+  
+     event LogCreateCertificate(string tokenURI, address caller, uint certId);
+    /*
+     Mint certificate 
+    */
+
+  
      /*
       @notice: Rental Struct Object/Entity
       @param: id - unique id
@@ -158,9 +174,9 @@ contract CarContract is  Ownable, AccessControl, ReentrancyGuard{
       Constructor
       Give the withdrawer role to onwer.
      */
-    constructor() {
-        _setupRole(WITHDRAWER_ROLE,msg.sender);
-        emit LogForCreated(address(this));
+    constructor() ERC721("Car Certificate", "CCT") {
+       
+      emit LogForCreated(address(this));
     }
 
     
@@ -196,11 +212,44 @@ function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid
     });
 
     _rentalId.increment();
-   
+    CreateCertificate(BaseUri);
     emit LogRentCar(rentalId);
     return true;
     
 }
+
+
+/*
+@notice: Fetch Rental by driver's address(0x0)
+@param: Return the Rental Struct object
+ */
+function fetchRental(address payable driver) public view  returns(uint rid, uint datetime, uint duration, uint deposit,address payable renter, uint cid, uint state) {
+
+        rid = Rentals[driver].id; 
+        datetime = Rentals[driver].datetime;
+        duration = Rentals[driver].duration;
+        deposit = Rentals[driver].deposit;
+        renter = Rentals[driver].driver;
+        cid = Rentals[driver].cid;  
+        state = uint(Rentals[driver].state);  
+
+
+return (rid, datetime, duration, deposit, renter,cid,state); 
+}
+
+
+
+
+
+ /* Mints a token and lists it in the marketplace- testing */
+    function CreateCertificate(string memory tokenURI) private  returns (uint) {
+      _tokenIds.increment();
+      uint256 newTokenId = _tokenIds.current();
+      _mint(msg.sender, newTokenId);
+      _setTokenURI(newTokenId, tokenURI);
+      emit LogCreateCertificate(tokenURI, msg.sender, newTokenId);
+      return newTokenId;
+    }
 
 }
 
