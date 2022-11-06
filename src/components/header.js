@@ -6,6 +6,10 @@ import { Button, Link } from "@mui/material";
 export default function Header() {
   const { isAuthenticated, isAuthenticating, user, authenticate, logout, isLoggingOut } = useMoralis();
 
+  const logOut = async () => {
+    await logout();
+    console.log("logged out--DB");
+  }
 
   if (!isAuthenticated) {
     return (
@@ -28,7 +32,7 @@ export default function Header() {
           <div className="address">
             <div><p>{user.get("ethAddress")}</p> </div>
           
-        <Button variant="contained" onClick={logout} disabled={isLoggingOut} >Logout</Button>
+        <Button variant="contained" onClick={logOut} disabled={isLoggingOut} >Logout</Button>
           </div>
         
         </div>

@@ -158,6 +158,7 @@ export default function App() {
   const entry = () => {
     navigate('/entry')
   }
+ 
   if (!isAuthenticated) {
   return (
     <>
