@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "metarent-789da"
+  },
+  "targets": {},
+  "etags": {
+    "metarent-789da": {
+      "extensionInstances": {
+        "moralis-streams": "3b182fd01e8defdd2668c3e2e96586b321695226ece35952f08d432f8a5bbbb1"
+      }
+    }
+  }
+}

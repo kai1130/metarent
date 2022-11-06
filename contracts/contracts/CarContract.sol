@@ -132,6 +132,8 @@ contract CarContract is  Ownable,  ReentrancyGuard, ERC721URIStorage {
         uint deposit;
         uint cid;
         RentalState state;
+        string imageuri;
+        string ipfsuri;
     }
 
 
@@ -195,8 +197,9 @@ contract CarContract is  Ownable,  ReentrancyGuard, ERC721URIStorage {
  @param:  driving license id - Driving Identify of the driver, this information should be masked and hashed to compliance with GDPR.
  @param:  booking date - The exact booking date.
  @param:  return - True. If no errors.
+ @Param: IPFS uri
  */
-function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid, uint _datetime) external  payable canBook(msg.sender) isNotOwner(msg.sender)  returns(bool) {
+function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid, uint _datetime, string calldata _imageuri, string calldata _ipfsuri) external  payable canBook(msg.sender) isNotOwner(msg.sender)  returns(bool) {
     uint256 amount = msg.value;
     address payable driver = payable(msg.sender);
     Rentals[driver] = Rental({
@@ -208,6 +211,8 @@ function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid
     deposit:amount,
     driver: driver,
     cid:_uid,
+    imageuri:_imageuri,
+    ipfsuri: _ipfsuri,
     state: RentalState.Occuppied
     });
     
@@ -223,7 +228,7 @@ function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid
 @notice: Fetch Rental by driver's address(0x0)
 @param: Return the Rental Struct object
  */
-function fetchRental(address payable driver) public view  returns(uint rid, uint datetime, uint duration, uint deposit,address payable renter, uint cid, uint state) {
+function fetchRental(address payable driver) public view  returns(uint rid, uint datetime, uint duration, uint deposit,address payable renter, uint cid, uint state, string memory ipfsuri) {
 
         rid = Rentals[driver].id; 
         datetime = Rentals[driver].datetime;
@@ -232,9 +237,10 @@ function fetchRental(address payable driver) public view  returns(uint rid, uint
         renter = Rentals[driver].driver;
         cid = Rentals[driver].cid;  
         state = uint(Rentals[driver].state);  
+        ipfsuri =  string(Rentals[driver].ipfsuri);  
 
 
-return (rid, datetime, duration, deposit, renter,cid,state); 
+return (rid, datetime, duration, deposit, renter,cid,state, ipfsuri); 
 }
 
 
