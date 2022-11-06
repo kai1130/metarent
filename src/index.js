@@ -3,13 +3,15 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { MoralisProvider } from "react-moralis";
+import { BrowserRouter } from "react-router-dom"
 require('dotenv').config();
 
 ReactDOM.render(
 
   <MoralisProvider appId={process.env.REACT_APP_MORALIS_SERVER_APP_ID} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}>
-    
-    <App />
+      <BrowserRouter>
+      <App />
+    </BrowserRouter>
     </MoralisProvider>,
   document.getElementById("root")
 );
