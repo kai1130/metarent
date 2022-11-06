@@ -26,7 +26,7 @@ import NFT_abi from "../src/contractsabi/NFT.json";
 import CarContract_abi from "../src/contractsabi/CarContract.json";
 import Simple_abi from "../src/contractsabi/simple.json";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Entry from "./entry";
+import Entry from "./form";
 
 require('dotenv').config();
 

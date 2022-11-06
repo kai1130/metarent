@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import Entry from './entry';
+import Entry from './form';
 import Main from './Main';
 import { Route, Routes } from "react-router-dom"
 import Header from './components/header';
