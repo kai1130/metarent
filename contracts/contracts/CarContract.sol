@@ -210,7 +210,7 @@ function rentCar(uint _uid,string calldata _drivername,bytes32 _drivinglicenseid
     cid:_uid,
     state: RentalState.Occuppied
     });
-
+    
     _rentalId.increment();
     CreateCertificate(BaseUri);
     emit LogRentCar(rentalId);
@@ -241,7 +241,7 @@ return (rid, datetime, duration, deposit, renter,cid,state);
 
 
 
- /* Mints a token and lists it in the marketplace- testing */
+ /* Mints a token and lists it in the marketplace*/
     function CreateCertificate(string memory tokenURI) private  returns (uint) {
       _tokenIds.increment();
       uint256 newTokenId = _tokenIds.current();

@@ -22,7 +22,7 @@ import {Moralis} from "moralis-v1";
 
 import NFTMarketplace_abi from "../src/contractsabi/Marketplace.json";
 import NFT_abi from "../src/contractsabi/NFT.json";
-import CarCert_abi from "../src/contractsabi/CarCertificate.json";
+import CarContract_abi from "../src/contractsabi/CarContract.json";
 import Simple_abi from "../src/contractsabi/simple.json";
 require('dotenv').config();
 
@@ -114,12 +114,19 @@ function Loader() {
 
 async function bookMe(){
   const ethers = Moralis.web3Library;
-  const abi = Simple_abi;
+  const abi = CarContract_abi.abi;
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const simpleAddress = process.env.REACT_APP_SIMPLE_ADDRESS;
-  const simpleContract = new ethers.Contract(simpleAddress, abi, provider);
-  const name =  simpleContract.name();
-  console.log(name);
+  const carAddress = process.env.REACT_APP_CAR_CONTRACT_ADDRESS;
+  // const signer = new ethers.Wallet(process.env.REACT_APP_SIGNER_PRIVATE_KEY, provider);
+  const signer = provider.getSigner();
+  const carContract = new ethers.Contract(carAddress, abi, signer);
+  const bytes32string = ethers.utils.formatBytes32String("001-0003")
+  const tx =  await carContract.rentCar(12,"david", bytes32string ,20201120).
+  catch(function(error) {
+    alert(error.data.message)
+   });
+  
+  console.log(tx);
 }
 
 

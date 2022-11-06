@@ -1,15 +1,8 @@
-require('@nomiclabs/hardhat-waffle')
-require('dotenv').config()
+require("@nomicfoundation/hardhat-toolbox");
 
-task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners()
-  for (const account of accounts) {
-    console.log(account.address)
-  }
-})
 
 module.exports = {
-  solidity: '0.8.3',
+  solidity: '0.8.17',
   
   networks:{
 
