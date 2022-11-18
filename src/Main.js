@@ -116,29 +116,15 @@ function Loader() {
 
 
 async function bookMe(){
+    try {
+      const result = await axios.post('https://rcdwgyydfr7ofyjmhzsoy6k33i0dpwbd.lambda-url.us-east-1.on.aws/');
+        console.log(result.data.body.OwnerName);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      console.log('We do cleanup here');
+    }
 
-
-   
-  // const result = await axios.post('https://njq6jpvubejef72wcgrl6t5mdq0sdnpj.lambda-url.us-east-1.on.aws/');
-  // console.log(result.data);
-
-  const ethers = Moralis.web3Library;
-  const abi = CarContract_abi;
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const carAddress = process.env.REACT_APP_CAR_CONTRACT_ADDRESS;
-  // const signer = new ethers.Wallet(process.env.REACT_APP_SIGNER_PRIVATE_KEY, provider);
-  const signer = provider.getSigner();
-  const carContract = new ethers.Contract(carAddress, abi, signer);
-  const bytes32string = ethers.utils.formatBytes32String("001-0003");
-  const driverName = "david";
-  const id = 12;
-  const bookingTime = 20201120;
-  const IPFSHash = "bafkreib36vwxvtu5rqshlqdfzfclhjewzobt2czddzhbdjn3ojraqtre64";
-  const tx =  await carContract.rentCar(id,driverName, bytes32string ,bookingTime, IPFSHash).
-  catch(function(error) {
-    alert(error.data.message)
-   });
- 
   // const ethers = Moralis.web3Library;
   // const abi = CarContract_abi;
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -155,6 +141,7 @@ async function bookMe(){
   //   alert(error.data.message)
   //  });
 
+  //  alert(tx.hash)
  
 }
 
