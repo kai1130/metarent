@@ -27,7 +27,6 @@ import CarContract_abi from "../src/contractsabi/CarContract.json";
 import Simple_abi from "../src/contractsabi/simple.json";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Entry from "./form";
-
 require('dotenv').config();
 
 function Model({ url }) {
@@ -117,30 +116,33 @@ function Loader() {
 
 
 async function bookMe(){
+    try {
+      const result = await axios.post('https://rcdwgyydfr7ofyjmhzsoy6k33i0dpwbd.lambda-url.us-east-1.on.aws/');
+        console.log(result.data.body.OwnerName);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      console.log('We do cleanup here');
+    }
+
   // const ethers = Moralis.web3Library;
-  // const abi = CarContract_abi.abi;
+  // const abi = CarContract_abi;
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
   // const carAddress = process.env.REACT_APP_CAR_CONTRACT_ADDRESS;
-  // // const signer = new ethers.Wallet(process.env.REACT_APP_SIGNER_PRIVATE_KEY, provider);
-  // const signer = provider.getSigner();
-  // const carContract = new ethers.Contract(carAddress, abi, signer);
+  // const signer = provider.getSigner()
+  // const carContract = new ethers.Contract(carAddress, abi, signer)
   // const bytes32string = ethers.utils.formatBytes32String("001-0003");
   // const driverName = "david";
   // const id = 12;
   // const bookingTime = 20201120;
-  // const tx =  await carContract.rentCar(id,driverName, bytes32string ,bookingTime).
+  // const IPFSHash = "bafkreib36vwxvtu5rqshlqdfzfclhjewzobt2czddzhbdjn3ojraqtre64";
+  // const tx =  await carContract.rentCar(id,driverName, bytes32string ,bookingTime, IPFSHash).
   // catch(function(error) {
   //   alert(error.data.message)
   //  });
-  
-  // console.log(tx);
 
-  axios.get(`https://jsonplaceholder.typicode.com/users`)
-      .then(res => {
-        const persons = res.data;
-        console.log(persons[0].name);
-      })
-
+  //  alert(tx.hash)
+ 
 }
 
 
@@ -158,6 +160,7 @@ export default function App() {
   const entry = () => {
     navigate('/entry')
   }
+ 
   if (!isAuthenticated) {
   return (
     <>
@@ -195,7 +198,7 @@ export default function App() {
             scale_value={0.12}>
             <span>Nissan</span>
             <span>Skyline GT-R(C110) Kenmeri</span>
-           
+            <Button variant="contained" onClick={()=>bookMe()} >Book Me</Button>
           </HTMLContent>
           <HTMLContent
             domContent={domContent}

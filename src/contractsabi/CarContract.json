@@ -287,12 +287,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "imageuri",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "ipfsuri",
+				"name": "ipfshash",
 				"type": "string"
 			}
 		],
@@ -522,12 +517,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "_imageuri",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_ipfsuri",
+				"name": "_ipfshash",
 				"type": "string"
 			}
 		],

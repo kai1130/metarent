@@ -3,6 +3,7 @@ import Entry from './form';
 import Main from './Main';
 import { Route, Routes } from "react-router-dom"
 import Header from './components/header';
+import Dashboard from './Dashboard';
 function App() {
   return (
     <>
@@ -11,9 +12,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/entry" element={<Entry />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
-      
     </>
   )
 }

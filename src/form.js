@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 
 import '../src/styles/form.css';
-
+import { useMoralis } from "react-moralis";
 export default function Form(){
-
+    const {isAuthenticated, user, isAuthenticating, authenticate, logout, isLoggingOut} = useMoralis()
     const [form, setForm] = useState({
         name: "",
         phone: "",
@@ -70,8 +70,9 @@ export default function Form(){
     }
 
 
-
+if(isAuthenticated){
     return (
+      
         <div className = "form-box">
 
             <h5 className = "form-step"> steps: {count} of 4 </h5>
@@ -259,4 +260,11 @@ export default function Form(){
         </div>
         // end of form-box
     )
+}
+return (
+      
+    
+   
+    <h1>Unauthorised</h1>
+)
 }
